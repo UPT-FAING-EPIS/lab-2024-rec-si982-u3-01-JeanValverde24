@@ -4,7 +4,7 @@
 
 namespace ShortenFunction.Migrations
 {
-    /// <inheritdoc />
+    /// <inheritdocwqewq />
     public partial class CreateIdentitySchema : Migration
     {
         /// <inheritdoc />
