@@ -7,7 +7,7 @@ terraform {
   }
   required_version = ">= 0.14.9"
 }
-# dsadsadsadsa
+# dsadsadsadsadsadsa
 variable "suscription_id" {
     type = string
     description = "Azure subscription id"
