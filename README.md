@@ -838,6 +838,24 @@ Revisamos que se elimine tambien en la abse de datos:
 
 
 4. Realizar el escaneo de vulnerabilidad con SonarCloud y Semgrep dentro del Github Action correspondiente. (2ptos)
+### REPOSITORIO ESPEJO DEL ANALISIS [IR AL REPOSITORIO](https://github.com/JeanValverde24/Repo_Mirror_lab_u3_01)
+
+#### Resultado del Fetch de las metricas en el summary SONNARCLOUD [VER RESULTADOS](https://github.com/JeanValverde24/Repo_Mirror_lab_u3_01/actions/runs/13442396226)
+
+#### Resulatdo de Metricas en SEMGREP [VER RESULTADOS](https://github.com/JeanValverde24/Repo_Mirror_lab_u3_01/actions/runs/13442897326)
+
+#### DASHBOARD SONARCLOUD
+
+![alt text](imagenes/sonar.png)
+
+![alt text](imagenes/sonar-1.png)
+
+#### DAHSBOARD SEMGREP
+
+![alt text](imagenes/semgrep-2.png)
+
+![alt text](imagenes/semgrep-3.png)
+
 5. Generar un Action para el despliegue de las dos aplicaciones, backend y frntend, incluyendo todo lo anterior. (4ptos)
 
 
