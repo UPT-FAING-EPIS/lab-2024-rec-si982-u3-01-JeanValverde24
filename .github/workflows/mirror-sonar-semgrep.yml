@@ -3,7 +3,9 @@ name: Sync Changes in src to Mirror
 on:
   push:
     branches:
-      - main  # Se ejecuta solo cuando hay cambios en la rama principal
+      - main  # Se ejecuta solo en la rama main
+    paths:
+      - 'src/**'  # Solo se ejecuta si hay cambios en la carpeta src
 
 jobs:
   sync-repo:
@@ -20,39 +22,24 @@ jobs:
           git config --global user.email "jv2020066920@virtual.upt.pe"
           git config --global user.name "JeanValverde24"
 
-      - name: Filtrar solo los cambios en 'src'
-        run: |
-          git diff --name-only HEAD~1 HEAD > changed_files.txt
-          echo "Archivos modificados:"
-          cat changed_files.txt
-
-          # Filtrar archivos dentro de la carpeta src
-          grep -E '^src/' changed_files.txt > files_to_commit.txt || true
-          echo "Archivos a sincronizar:"
-          cat files_to_commit.txt
-
       - name: Clonar repositorio espejo
         run: |
           git clone https://JeanValverde24:${{ secrets.SECRET_GIT_PAT }}@github.com/JeanValverde24/Repo_Mirror_lab_u3_01.git repo_espejo
           cd repo_espejo
           git checkout main
 
-      - name: Copiar solo los archivos filtrados al espejo
+      - name: Copiar solo la carpeta src al repositorio espejo
         run: |
           cd repo_espejo
-          while read file; do
-            if [[ -f "../$file" || -d "../$file" ]]; then
-              mkdir -p "$(dirname "$file")"
-              cp -r "../$file" "$file"
-            fi
-          done < ../files_to_commit.txt
-
+          rm -rf src  # Eliminar src existente en el repositorio espejo para evitar conflictos
+          cp -r ../src .
+          
       - name: Confirmar y enviar los cambios al espejo
         run: |
           cd repo_espejo
-          git add .
+          git add src
           if git diff --cached --quiet; then
-            echo "No hay cambios que sincronizar."
+            echo "No hay cambios en la carpeta src, no se realizará el push."
             exit 0
           fi
           git commit -m "Sync: Actualización de la carpeta src"
