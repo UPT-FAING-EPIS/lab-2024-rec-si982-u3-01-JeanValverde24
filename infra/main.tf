@@ -34,7 +34,7 @@ resource "random_integer" "ri" {
   max = 999
 }
 
-# Create the resource groupdsadsadsa
+# Create the resource groudaspdsadsadsa
 resource "azurerm_resource_group" "rg" {
   name     = "upt-arg-${random_integer.ri.result}"
   location = "brazilsoutheast"
