@@ -744,6 +744,61 @@ https://thankful-pond-0f80ab50f.4.azurestaticapps.net
 ## ACTIVIDADES ENCARGADAS
 
 1. Generar y subir el diagrama de infraestructura al repositorio como lab_02.png y el reporte de metricas. (2ptos)
+
+![alt text](Lab_02.png)
+
+<details><summary>Reporte de metricas de la aplicacion</summary>
+
+```Bash
+PS C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24> az monitor metrics list --resource "/subscriptions/83fff94f-ea6d-44c3-a294-e78a99bee2f9/resourceGroups/upt-arg-549/providers/Microsoft.Web/sites/upt-afn-549" --metric "Requests" --start-time 2025-02-19T20:00:00Z --end-time 2025-02-19T20:42:00Z --output table
+tput table;9268d4a9-e5d4-4836-bbf1-0a0361b23634Timestamp             Name      Total  
+--------------------  --------  -------
+2025-02-19T20:00:00Z  Requests  0.0    
+2025-02-19T20:01:00Z  Requests  0.0    
+2025-02-19T20:02:00Z  Requests  0.0    
+2025-02-19T20:03:00Z  Requests  0.0    
+2025-02-19T20:04:00Z  Requests  0.0    
+2025-02-19T20:05:00Z  Requests  0.0    
+2025-02-19T20:06:00Z  Requests  0.0    
+2025-02-19T20:07:00Z  Requests  0.0    
+2025-02-19T20:08:00Z  Requests  0.0    
+2025-02-19T20:09:00Z  Requests  0.0    
+2025-02-19T20:10:00Z  Requests  0.0    
+2025-02-19T20:11:00Z  Requests  0.0
+2025-02-19T20:12:00Z  Requests  0.0
+2025-02-19T20:13:00Z  Requests  0.0
+2025-02-19T20:14:00Z  Requests  0.0
+2025-02-19T20:15:00Z  Requests  0.0
+2025-02-19T20:16:00Z  Requests  0.0
+2025-02-19T20:17:00Z  Requests  0.0
+2025-02-19T20:18:00Z  Requests  0.0
+2025-02-19T20:19:00Z  Requests  0.0
+2025-02-19T20:20:00Z  Requests  0.0
+2025-02-19T20:21:00Z  Requests  0.0
+2025-02-19T20:22:00Z  Requests  0.0
+2025-02-19T20:23:00Z  Requests  0.0
+2025-02-19T20:24:00Z  Requests  0.0
+2025-02-19T20:25:00Z  Requests  0.0
+2025-02-19T20:26:00Z  Requests  0.0
+2025-02-19T20:27:00Z  Requests  0.0
+2025-02-19T20:28:00Z  Requests  0.0
+2025-02-19T20:29:00Z  Requests  0.0
+2025-02-19T20:30:00Z  Requests  0.0
+2025-02-19T20:31:00Z  Requests  0.0
+2025-02-19T20:32:00Z  Requests  0.0
+2025-02-19T20:33:00Z  Requests  0.0
+2025-02-19T20:34:00Z  Requests  0.0
+2025-02-19T20:35:00Z  Requests  0.0
+2025-02-19T20:36:00Z  Requests  0.0
+2025-02-19T20:37:00Z  Requests  0.0
+2025-02-19T20:38:00Z  Requests  0.0
+2025-02-19T20:39:00Z  Requests  0.0
+2025-02-19T20:40:00Z  Requests  0.0
+2025-02-19T20:41:00Z  Requests  0.0
+PS C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24
+```
+</details>
+
 2. Realizar el escaneo del codigo de terraform utilizando TfSec o Trivy dentro del Github Action. (2ptos)
 3. En la aplicación completar con las demas funcionalidades, de crear, actualizar y eliminar (4ptos)
 4. Realizar el escaneo de vulnerabilidad con SonarCloud y Semgrep dentro del Github Action correspondiente. (2ptos)
