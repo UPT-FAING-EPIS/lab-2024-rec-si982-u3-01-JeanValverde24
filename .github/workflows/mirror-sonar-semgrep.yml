@@ -3,7 +3,7 @@ name: Sync Changes in src to Mirror
 on:
   push:
     branches:
-      - main  # Se ejecuta solo en la rama main
+      - main
     paths:
       - 'src/**'  # Solo se ejecuta si hay cambios en la carpeta src
 
@@ -33,7 +33,7 @@ jobs:
           cd repo_espejo
           rm -rf src  # Eliminar src existente en el repositorio espejo para evitar conflictos
           cp -r ../src .
-          
+
       - name: Confirmar y enviar los cambios al espejo
         run: |
           cd repo_espejo
