@@ -37,7 +37,7 @@ resource "random_integer" "ri" {
 # Create the resource groupdsadsadsa
 resource "azurerm_resource_group" "rg" {
   name     = "upt-arg-${random_integer.ri.result}"
-  location = "eastus2"
+  location = "brazilsoutheast"
 }
 
 resource "azurerm_storage_account" "storageaccount" {
