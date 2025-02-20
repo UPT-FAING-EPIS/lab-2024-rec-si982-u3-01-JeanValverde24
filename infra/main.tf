@@ -28,7 +28,7 @@ provider "azurerm" {
   subscription_id = var.suscription_id
 }
 
-# Generate a random integer to create a globally unique name
+# Generate a random integer to create a globally unique nameewq
 resource "random_integer" "ri" {
   min = 100
   max = 999
