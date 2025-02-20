@@ -800,6 +800,14 @@ PS C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24
 </details>
 
 2. Realizar el escaneo del codigo de terraform utilizando TfSec o Trivy dentro del Github Action. (2ptos)
-3. En la aplicación completar con las demas funcionalidades, de crear, actualizar y eliminar (4ptos)
-4. Realizar el escaneo de vulnerabilidad con SonarCloud y Semgrep dentro del Github Action correspondiente. (2ptos)
-5. Generar un Action para el despliegue de las dos aplicaciones, backend y frntend, incluyendo todo lo anterior. (4ptos)
+
+![alt text](imagenes/image21.png)
+   
+![alt text](imagenes/image18.png)
+
+![alt text](imagenes/image19.png)
+
+![alt text](imagenes/image20.png)
+1. En la aplicación completar con las demas funcionalidades, de crear, actualizar y eliminar (4ptos)
+2. Realizar el escaneo de vulnerabilidad con SonarCloud y Semgrep dentro del Github Action correspondiente. (2ptos)
+3. Generar un Action para el despliegue de las dos aplicaciones, backend y frntend, incluyendo todo lo anterior. (4ptos)
