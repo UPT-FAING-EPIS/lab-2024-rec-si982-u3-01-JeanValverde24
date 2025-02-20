@@ -25,27 +25,13 @@ jobs:
           echo "sqladmin_username=\"${{ secrets.SQL_USER }}\"" >> terraform.tfvars
           echo "sqladmin_password=\"${{ secrets.SQL_PASS }}\"" >> terraform.tfvars
 
-      # 🔍 Setup y Escaneo de Seguridad con Trivy
-      - name: Setup Trivy
-        run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-          sudo mv trivy /usr/local/bin/
-
-      - name: Run Trivy IaC Scan
-        run: |
-          cd infra
-          trivy config --format json --output trivy-report.json .
-
-      - name: Convert Trivy Report to Markdown
-        id: trivy-json2md
-        uses: mikefarah/yq@master
+      # 🔍 Escaneo de seguridad con Trivy antes de Terraform Init
+      - name: 'Escaneo de Terraform con Trivy'
+        uses: aquasecurity/trivy-action@master
         with:
-          cmd: yq -r '.Results[] | "### " + .Target + "\n" + (.Misconfigurations | map(" - " + .ID + ": " + .Message) | join("\n"))' infra/trivy-report.json > infra/trivy-report.md
-
-      - name: Publish Trivy Report
-        run: |
-          echo "## Trivy Security Scan Report" >> $GITHUB_STEP_SUMMARY
-          cat infra/trivy-report.md >> $GITHUB_STEP_SUMMARY
+          scan-type: 'config'
+          scan-ref: './infra'
+          severity: 'HIGH,CRITICAL'
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
