@@ -1,0 +1,65 @@
+﻿@page "/urlmapping"
+@using System.Text.Json
+@inject HttpClient Http
+
+<PageTitle>Mapeo de Urls</PageTitle>
+
+<h1>Urls Acortadas</h1>
+
+<p>Listado de lasurls acortadas</p>
+
+@if (urls == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Url Original</th>
+                <th>Url Acortada</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var url in urls)
+            {
+                <tr>
+                    <td>@url.Id</td>
+                    <td>@url.OriginalUrl</td>
+                    <td>@url.ShortenedUrl</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private UrlMapeada[]? urls;
+    protected override async Task OnInitializedAsync()
+    {
+        //tipos = await Http.GetFromJsonAsync<TipoDocumento[]>("sample-data/weather.json");
+        urls = await Http.GetFromJsonAsync<UrlMapeada[]>("api/shorturl", new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+    }
+    public class UrlMapeada
+    {
+        /// <summary>
+        /// Identificador del mapeo de url
+        /// </summary>
+        /// <value>Entero</value>
+        public int Id { get; set; }
+        /// <summary>
+        /// Valor original de la url
+        /// </summary>
+        /// <value>Cadena</value>
+        public string OriginalUrl { get; set; } = string.Empty;
+        /// <summary>
+        /// Valor corto de la url
+        /// </summary>
+        /// <value>Cadena</value>
+        public string ShortenedUrl { get; set; } = string.Empty;
+    }
+}

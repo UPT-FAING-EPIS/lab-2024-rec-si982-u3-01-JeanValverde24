@@ -141,7 +141,7 @@ resource "azurerm_mssql_database" "sqldb" {
   sku_name = "Free"
 }
 ```
-![alt text](image.png)
+![alt text](imagenes/image.png)
 
 3. Abrir un navegador de internet y dirigirse a su repositorio en Github, en la sección *Settings*, buscar la opción *Secrets and Variables* y seleccionar la opción *Actions*. Dentro de esta crear los siguientes secretos
 > AZURE_USERNAME: Correo o usuario de cuenta de Azure
@@ -153,6 +153,8 @@ resource "azurerm_mssql_database" "sqldb" {
 > SQL_USER: Usuario administrador de la base de datos, ejm: adminsql
 > 
 > SQL_PASS: Password del usuario administrador de la base de datos, ejm: upt.2025
+
+![alt text](imagenes/image-1.png)
 
 5. En el Visual Studio Code, crear la carpeta .github/workflows en la raiz del proyecto, seguidamente crear el archivo deploy.yml con el siguiente contenido
 <details><summary>Click to expand: deploy.yml</summary>
@@ -319,10 +321,13 @@ jobs:
 ```
 </details>
 
+![alt text](imagenes/image-2.png)
+
 6. En el Visual Studio Code, guardar los cambios y subir los cambios al repositorio. Revisar los logs de la ejeuciòn de automatizaciòn y anotar el numero de identificaciòn de Grupo de Recursos y Aplicación Web creados
 ```Bash
 azurerm_linux_web_app.webapp: Creation complete after 53s [id=/subscriptions/1f57de72-50fd-4271-8ab9-3fc129f02bc0/resourceGroups/upt-arg-XXX/providers/Microsoft.Web/sites/upt-awa-XXX]
 ```
+![alt text](imagenes/image-3.png)
 
 ### CONSTRUCCION DE LA APLICACION - BACKEND
 
@@ -336,6 +341,39 @@ func new --name ShortenHttp --template "HTTP trigger" --authlevel "anonymous"
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version=8.0.0
 dotnet add package Microsoft.EntityFrameworkCore.Tools --version=8.0.0
 ```
+<details><summary>dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version=8.0.0</summary>
+
+```bash
+info : El paquete "Microsoft.EntityFrameworkCore.SqlServer" es compatible con todos los marcos de trabajo especificados del proyecto "C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj".
+info : Se agregó PackageReference para la versión "8.0.0" del paquete "Microsoft.EntityFrameworkCore.SqlServer" al archivo "C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj".
+info : Generación de archivo MSBuild C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\obj\ShortenFunction.csproj.nuget.g.props.
+info : Generación de archivo MSBuild C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\obj\ShortenFunction.csproj.nuget.g.targets.
+info : Escribiendo el archivo de recursos en el disco. Ruta de acceso: C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\obj\project.assets.json
+log  : Se ha restaurado C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj (en 6,26 s).
+```
+</details>
+
+
+<details><summary>dotnet add package Microsoft.EntityFrameworkCore.Tools --version=8.0.0</summary>
+
+```bash
+Compilación realizado correctamente en 0,4s
+info : La validación de la cadena de certificados X.509 utilizará el almacén de confianza predeterminado seleccionado por .NET para la firma de código.
+info : La validación de la cadena de certificados X.509 utilizará el almacén de confianza predeterminado seleccionado por .NET para la marca de tiempo.
+info : Agregando PackageReference para el paquete "Microsoft.EntityFrameworkCore.Tools" al proyecto "C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj".
+info : Restaurando paquetes para C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj...
+info :   CACHE https://api.nuget.org/v3/vulnerabilities/index.json
+info :   CACHE https://api.nuget.org/v3-vulnerabilities/2025.02.14.05.20.53/vulnerability.base.json
+info :   CACHE https://api.nuget.org/v3-vulnerabilities/2025.02.14.05.20.53/2025.02.19.17.21.08/vulnerability.update.json
+info : El paquete "Microsoft.EntityFrameworkCore.Tools" es compatible con todos los marcos de trabajo especificados del proyecto "C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj".
+info : Se agregó PackageReference para la versión "8.0.0" del paquete "Microsoft.EntityFrameworkCore.Tools" al archivo "C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj".
+info : Generación de archivo MSBuild C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\obj\ShortenFunction.csproj.nuget.g.props.
+info : Generación de archivo MSBuild C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\obj\ShortenFunction.csproj.nuget.g.targets.
+info : Escribiendo el archivo de recursos en el disco. Ruta de acceso: C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\obj\project.assets.json
+log  : Se ha restaurado C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction\ShortenFunction.csproj (en 334 ms).
+PS C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24\src\ShortenFunction>  
+```
+</details>
 
 2. En el VS Code, buscar el proyecto ShortenFunction modificar el archivo ShortenHttp.cs, con el siguiente contenido:
 ```CSharp
@@ -511,6 +549,7 @@ namespace ShortenFunction
 }
 
 ```
+![alt text](imagenes/image-4.png)
 
 3. En el VS Code, buscar el proyecto ShortenFunction modificar el archivo local.settings.json, con el siguiente contenido:
 ```JSon
@@ -529,16 +568,23 @@ namespace ShortenFunction
 >       YYY, usuario administrador de base de datos
 >       ZZZ, password del usuario de base de datos
 
+![alt text](imagenes/image-5.png)
+
 4. En el Terminal, ejecutar el siguiente comando para crear las tablas de base de datos de identidad.
 ```Bash
 dotnet ef migrations add CreateIdentitySchema
 dotnet ef database update
 ```
+![alt text](imagenes/image-6.png)
 
 5. En el Terminal, ejecutar el siguiente comando para ejecutar la aplicación.
 ```Bash
 func start
 ```
+
+![alt text](imagenes/image-8.png)
+
+![alt text](imagenes/image-7.png)
 
 6. En el Terminal, ejecutar el siguiente comando para configurar, compilar y desplegar la aplicación.
 ```Bash
@@ -553,8 +599,15 @@ az functionapp deployment source config-zip -g upt-arg-373 -n upt-afn-373 --src 
 >       YYY, usuario administrador de base de datos
 >       ZZZ, password del usuario de base de datos
 
+
+![alt text](imagenes/image-9.png)
+
+![alt text](imagenes/image-10.png)
+
 7. En el Navegador, abrir una nueva pestaña e ingresar a la url https://upt-afn-XXX.azurewebsites.net/api/shorturl
 >Donde: XXX, id de su azure function
+
+![alt text](imagenes/image-11.png)
 
 ### CONSTRUCCION DE LA APLICACION - FRONTEND
 
@@ -565,6 +618,8 @@ cd ShortenApp
 dotnet new razorcomponent -n UrlMapping -o Pages
 code .
 ```
+![alt text](imagenes/image-12.png)
+
 9. En Visual Studio Code, dentro del proyecto ClienteApp, editar el archivo UrlMapping.razor con el siguiente contenido:
 ```CSharp
 @page "/urlmapping"
@@ -657,21 +712,34 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 ```
 >Donde: XXX, id del azure function
 
+![alt text](imagenes/image-13.png)
+
 12. (Opcional) en el terminal, ubicarse en la carpeta ClienteAPI, ejecutar el comando `dotnet run` para iniciar la aplicación. Anotar el numero de puerto que aparecera: Now listening on: http://localhost:XXXX. Abrir un navegador de internet e ingresar la url: http://localhost:XXXX
 
+![alt text](imagenes/image-14.png)
+
 13. (Opcional) en el navegador de internet, hacer click en la opción de la barra de navegación para generar una Aplicación Web Progresiva (PWA), lo cual creará una aplicación de escritorio utilizando la aplicación web desarrollada.
+
+![alt text](imagenes/image-15.png)
 
 14. En el Terminal, ubicarse en el directorio ShortenApp y ejecutar el siguiente comando para realizar el despliegue de la aplicación web estatica.
 ```Powershell
 dotnet publish -c Release -o publish
-swa deploy ./publish/wwwroot -n upt-swa-XXX --env production
+swa deploy ./publish/wwwroot -n upt-swa-549 --env production
 ```
 >Donde: XXX, id del azure static webapp
+
+![alt text](imagenes/image-16.png)
 
 15. En el Terminal, se visualizara el link de la Webapp Estatica, hacer click en el para verificar los resultados.
 
 ![image](https://github.com/user-attachments/assets/463ed443-3843-44a1-95bf-c7a9aa999666)
 
+![alt text](imagenes/image-17.png)
+
+```Bash
+https://thankful-pond-0f80ab50f.4.azurestaticapps.net 
+```
 
 ## ACTIVIDADES ENCARGADAS
 
