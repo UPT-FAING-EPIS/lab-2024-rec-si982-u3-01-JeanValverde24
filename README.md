@@ -718,7 +718,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 
 ![alt text](imagenes/image-14.png)
 
-13. (Opcional) en el navegador de internet, hacer click en la opción de la barra de navegación para generar una Aplicación Web Progresiva (PWA), lo cual creará una aplicación de escritorio utilizando la aplicación web desarrollada.
+
+1.  (Opcional) en el navegador de internet, hacer click en la opción de la barra de navegación para generar una Aplicación Web Progresiva (PWA), lo cual creará una aplicación de escritorio utilizando la aplicación web desarrollada.
 
 ![alt text](imagenes/image-15.png)
 
@@ -800,6 +801,40 @@ PS C:\Users\HP\lab-2024-rec-si982-u3-01-JeanValverde24
 </details>
 
 2. Realizar el escaneo del codigo de terraform utilizando TfSec o Trivy dentro del Github Action. (2ptos)
+
+![alt text](imagenes/image21.png)
+   
+![alt text](imagenes/image18.png)
+
+![alt text](imagenes/image19.png)
+
+![alt text](imagenes/image20.png)
 3. En la aplicación completar con las demas funcionalidades, de crear, actualizar y eliminar (4ptos)
+
+Editaremos una Url creada
+
+![alt text](imagenes/image-27.png)
+
+Aqui estamos editando la priemra Url creada y le colocamos el nombre de "EditarPrueba1"
+
+![alt text](imagenes/image-22.png)
+
+Como podemos ver, se actualizo el Url
+
+![alt text](imagenes/image-23.png)
+
+Revisamos que se esten registrando en la base de datos
+
+![alt text](imagenes/image-24.png)
+
+Ahora eliminaremos el segundo Url Creado:
+
+![alt text](imagenes/image-25.png)
+
+Revisamos que se elimine tambien en la abse de datos:
+
+![alt text](imagenes/image-26.png)
+
+
 4. Realizar el escaneo de vulnerabilidad con SonarCloud y Semgrep dentro del Github Action correspondiente. (2ptos)
 5. Generar un Action para el despliegue de las dos aplicaciones, backend y frntend, incluyendo todo lo anterior. (4ptos)

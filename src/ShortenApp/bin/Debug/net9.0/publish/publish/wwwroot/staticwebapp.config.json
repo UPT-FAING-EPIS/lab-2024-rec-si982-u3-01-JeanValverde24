@@ -1,0 +1,13 @@
+{
+    "routes": [
+      {
+        "route": "/*",
+        "headers": {
+          "Access-Control-Allow-Origin": "https://upt-afn-549.azurewebsites.net",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization"
+        }
+      }
+    ]
+  }
+  

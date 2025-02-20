@@ -1,65 +1,146 @@
 ﻿@page "/urlmapping"
 @using System.Text.Json
+@using System.Net.Http.Json
 @inject HttpClient Http
 
-<PageTitle>Mapeo de Urls</PageTitle>
+<PageTitle>Mapeo de URLs</PageTitle>
 
-<h1>Urls Acortadas</h1>
+<div class="container mt-4">
+    <h1 class="text-center text-primary">Gestión de URLs Acortadas</h1>
 
-<p>Listado de lasurls acortadas</p>
+    <p class="text-muted text-center">Administra tus URLs fácilmente</p>
 
-@if (urls == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Url Original</th>
-                <th>Url Acortada</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var url in urls)
-            {
-                <tr>
-                    <td>@url.Id</td>
-                    <td>@url.OriginalUrl</td>
-                    <td>@url.ShortenedUrl</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    @if (urls == null)
+    {
+        <p class="text-center text-secondary"><em>Cargando...</em></p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center shadow">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>URL Original</th>
+                        <th>URL Acortada</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var url in urls)
+                    {
+                        <tr>
+                            <td>@url.Id</td>
+                            <td><a href="@url.OriginalUrl" target="_blank">@url.OriginalUrl</a></td>
+                            <td><a href="@url.ShortenedUrl" target="_blank" class="text-success">@url.ShortenedUrl</a></td>
+                            <td>
+                                <button class="btn btn-warning btn-sm mx-1" @onclick="() => EditarUrl(url)">
+                                    ✏️ Editar
+                                </button>
+                                <button class="btn btn-danger btn-sm mx-1" @onclick="() => EliminarUrl(url.Id)">
+                                    ❌ Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <h2 class="mt-4 text-center">@((editando) ? "Editar URL" : "Agregar Nueva URL")</h2>
+
+    <div class="card shadow p-4">
+        <EditForm Model="@urlForm" OnValidSubmit="@(editando ? ActualizarUrl : CrearUrl)">
+            <DataAnnotationsValidator />
+            
+            <div class="mb-3">
+                <label class="form-label fw-bold">URL Original</label>
+                <InputText class="form-control border-primary shadow-sm" @bind-Value="urlForm.OriginalUrl" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold">URL Acortada</label>
+                <InputText class="form-control border-primary shadow-sm" @bind-Value="urlForm.ShortenedUrl" required />
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary mx-2">
+                    @((editando) ? "Actualizar URL 🔄" : "Agregar URL ➕")
+                </button>
+                @if (editando)
+                {
+                    <button type="button" class="btn btn-secondary mx-2" @onclick="CancelarEdicion">Cancelar ❌</button>
+                }
+            </div>
+        </EditForm>
+    </div>
+</div>
+
 @code {
     private UrlMapeada[]? urls;
+    private UrlMapeada urlForm = new();
+    private bool editando = false;
+
     protected override async Task OnInitializedAsync()
     {
-        //tipos = await Http.GetFromJsonAsync<TipoDocumento[]>("sample-data/weather.json");
-        urls = await Http.GetFromJsonAsync<UrlMapeada[]>("api/shorturl", new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+        await CargarUrls();
     }
+
+    private async Task CargarUrls()
+    {
+        urls = await Http.GetFromJsonAsync<UrlMapeada[]>("api/shorturl", new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        });
+    }
+
+    private async Task CrearUrl()
+    {
+        var response = await Http.PostAsJsonAsync("api/shorturl", urlForm);
+        if (response.IsSuccessStatusCode)
+        {
+            await CargarUrls();
+            urlForm = new UrlMapeada();
+        }
+    }
+
+    private void EditarUrl(UrlMapeada url)
+    {
+        urlForm = new UrlMapeada { Id = url.Id, OriginalUrl = url.OriginalUrl, ShortenedUrl = url.ShortenedUrl };
+        editando = true;
+    }
+
+    private async Task ActualizarUrl()
+    {
+        var response = await Http.PutAsJsonAsync($"api/shorturl/{urlForm.Id}", urlForm);
+        if (response.IsSuccessStatusCode)
+        {
+            await CargarUrls();
+            urlForm = new UrlMapeada();
+            editando = false;
+        }
+    }
+
+    private async Task EliminarUrl(int id)
+    {
+        var response = await Http.DeleteAsync($"api/shorturl/{id}");
+        if (response.IsSuccessStatusCode)
+        {
+            await CargarUrls();
+        }
+    }
+
+    private void CancelarEdicion()
+    {
+        urlForm = new UrlMapeada();
+        editando = false;
+    }
+
     public class UrlMapeada
     {
-        /// <summary>
-        /// Identificador del mapeo de url
-        /// </summary>
-        /// <value>Entero</value>
         public int Id { get; set; }
-        /// <summary>
-        /// Valor original de la url
-        /// </summary>
-        /// <value>Cadena</value>
         public string OriginalUrl { get; set; } = string.Empty;
-        /// <summary>
-        /// Valor corto de la url
-        /// </summary>
-        /// <value>Cadena</value>
         public string ShortenedUrl { get; set; } = string.Empty;
     }
 }
