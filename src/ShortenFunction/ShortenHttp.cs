@@ -9,12 +9,16 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Azure.WebJobs.Extensions.OpenApi.Core.Attributes;
+using Microsoft.OpenApi.Models;
 
 namespace ShortenFunction
 {
     public static class ShortenHttp
     {
         [FunctionName("GetAll")]
+        [OpenApiOperation(operationId: "GetAllUrls", tags: new[] { "URL Management" })]
+        [OpenApiResponseWithBody(statusCode: System.Net.HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UrlMapping[]), Description = "Lista de URLs acortadas")]
         public static async Task<IActionResult> GetShortUrls(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "shorturl")] HttpRequest req, ILogger log)
         {
@@ -33,6 +37,9 @@ namespace ShortenFunction
         }
 
         [FunctionName("GetById")]
+        [OpenApiOperation(operationId: "GetUrlById", tags: new[] { "URL Management" })]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Description = "ID de la URL")]
+        [OpenApiResponseWithBody(statusCode: System.Net.HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UrlMapping), Description = "Detalles de la URL")]
         public static async Task<IActionResult> GetShortUrlById(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "shorturl/{id}")] HttpRequest req, ILogger log, int id)
         {
@@ -43,6 +50,9 @@ namespace ShortenFunction
         }
 
         [FunctionName("Create")]
+        [OpenApiOperation(operationId: "CreateShortUrl", tags: new[] { "URL Management" })]
+        [OpenApiRequestBody("application/json", typeof(UrlMappingCreateModel), Description = "Datos de la URL a crear")]
+        [OpenApiResponseWithBody(statusCode: System.Net.HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UrlMapping), Description = "URL creada exitosamente")]
         public static async Task<IActionResult> CreateShortUrl(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "shorturl")] HttpRequest req, ILogger log)
         {
@@ -62,6 +72,10 @@ namespace ShortenFunction
         }
 
         [FunctionName("Update")]
+        [OpenApiOperation(operationId: "UpdateShortUrl", tags: new[] { "URL Management" })]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Description = "ID de la URL")]
+        [OpenApiRequestBody("application/json", typeof(UrlMappingCreateModel), Description = "Datos de la URL a actualizar")]
+        [OpenApiResponseWithBody(statusCode: System.Net.HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(UrlMapping), Description = "URL actualizada correctamente")]
         public static async Task<IActionResult> UpdateShortUrl(
             [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "shorturl/{id}")] HttpRequest req, ILogger log, int id)
         {
@@ -85,6 +99,9 @@ namespace ShortenFunction
         }
 
         [FunctionName("Delete")]
+        [OpenApiOperation(operationId: "DeleteShortUrl", tags: new[] { "URL Management" })]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Description = "ID de la URL")]
+        [OpenApiResponseWithBody(statusCode: System.Net.HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(string), Description = "URL eliminada correctamente")]
         public static async Task<IActionResult> DeleteShortUrl(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "shorturl/{id}")] HttpRequest req, ILogger log, int id)
         {
@@ -100,7 +117,7 @@ namespace ShortenFunction
             context.UrlMappings.Remove(url);
             await context.SaveChangesAsync();
 
-            // ✅ Si la tabla está vacía, reiniciar el autoincremento del IDdsadas
+            // ✅ Si la tabla está vacía, reiniciar el autoincremento del ID
             if (!await context.UrlMappings.AnyAsync())
             {
                 log.LogInformation("Tabla vacía, reiniciando ID...");
