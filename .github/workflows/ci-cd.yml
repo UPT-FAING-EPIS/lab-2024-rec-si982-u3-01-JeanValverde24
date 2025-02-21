@@ -24,12 +24,12 @@ jobs:
 
       - name: Build ShortenApp
         run: |
-          cd ShortenApp
+          cd ../src/ShortenApp
           dotnet publish -c Release -o publish
 
       - name: Deploy to Azure Static Web Apps
         run: |
-          cd ShortenApp
+          cd ../src/ShortenApp
           swa deploy ./publish/wwwroot -n ${{ secrets.AZURE_STATIC_WEBAPP_NAME }} --env production
 
   deploy-backend:
@@ -58,12 +58,12 @@ jobs:
 
       - name: Build ShortenFunction
         run: |
-          cd ShortenFunction
+          cd ../src/ShortenFunction
           dotnet publish -c Release -o publish
 
       - name: Create Deployment Package
         run: |
-          cd ShortenFunction/publish
+          cd ../src/ShortenFunction/publish
           zip -r functionapp.zip .
 
       - name: Deploy Function App to Azure
